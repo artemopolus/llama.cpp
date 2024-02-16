@@ -510,6 +510,10 @@ int main(int argc, char ** argv) {
 
     struct llama_sampling_context * ctx_sampling = llama_sampling_init(sparams);
 
+    std::ofstream outfile;
+
+    outfile.open("test.txt"); // append instead of overwrite
+
     while ((n_remain != 0 && !is_antiprompt) || params.interactive) {
         // predict
         if (!embd.empty()) {
@@ -724,6 +728,7 @@ int main(int argc, char ** argv) {
             for (auto id : embd) {
                 const std::string token_str = llama_token_to_piece(ctx, id);
                 printf("%s", token_str.c_str());
+                outfile << token_str;
 
                 if (embd.size() > 1) {
                     input_tokens.push_back(id);
@@ -908,6 +913,8 @@ int main(int argc, char ** argv) {
             is_interacting = true;
         }
     }
+
+    outfile.close();
 
     if (!path_session.empty() && params.prompt_cache_all && !params.prompt_cache_ro) {
         LOG_TEE("\n%s: saving final output to session file '%s'\n", __func__, path_session.c_str());
