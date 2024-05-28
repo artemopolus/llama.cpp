@@ -92,6 +92,8 @@ struct gpt_params {
     std::string logdir            = "";  // directory in which to save YAML log files
     std::string logits_file       = "";  // file for saving *all* logits
 
+    std::string responsefile = ""; // file to save prompt
+
     std::vector<llama_model_kv_override> kv_overrides;
 
     // TODO: avoid tuple, use struct
